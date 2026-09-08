@@ -456,6 +456,7 @@
       align-items: center;
     }
     .verify-input-row .token-input { flex: 1; }
+    .verify-input-row .sms-input { flex: 0 0 auto; }
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -582,7 +583,7 @@
       font-size: 13px;
       color: var(--text-secondary);
       line-height: 1.6;
-      margin-bottom: 20px;
+      margin-bottom: 12px;
     }
     .cert-id-row {
       font-size: 13px;
@@ -634,7 +635,7 @@
       display: flex;
       justify-content: flex-end;
       gap: 12px;
-      margin-top: 24px;
+      margin-top: 16px;
     }
     .notice {
       display: flex;
@@ -831,7 +832,7 @@
 
   <!-- 生成认证证书弹窗 -->
   <div class="modal-overlay" id="shareModal">
-    <div class="modal" style="max-width: 840px;">
+    <div class="modal" style="max-width: 720px;">
       <div class="modal-header">
         <div class="modal-title">生成认证证书</div>
         <div class="verify-scenario-switch">
