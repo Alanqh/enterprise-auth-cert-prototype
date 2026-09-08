@@ -437,11 +437,10 @@
     }
     .verify-section { margin-bottom: 20px; }
     .verify-section:last-child { margin-bottom: 0; }
-    .verify-label {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text-primary);
-      margin-bottom: 8px;
+    .sms-input {
+      max-width: 180px;
+      text-align: center;
+      letter-spacing: 2px;
     }
     .verify-phone {
       font-size: 13px;
@@ -816,7 +815,7 @@
 
   <!-- 生成认证证书弹窗 -->
   <div class="modal-overlay" id="shareModal">
-    <div class="modal" style="max-width: 720px;">
+    <div class="modal" style="max-width: 840px;">
       <div class="modal-header">
         <div class="modal-title">生成认证证书</div>
         <div class="verify-scenario-switch">
@@ -838,10 +837,9 @@
             <div>当前企业的所有者未绑定手机号，无法完成短信验证，请先绑定手机号。</div>
           </div>
           <div class="verify-section" id="verifyCodeSection">
-            <div class="verify-label">短信验证</div>
             <div class="verify-phone" id="verifyChannelHint">短信验证码将发送至：138****1234</div>
             <div class="verify-input-row" id="verifyInputRow">
-              <input class="token-input" id="verifyCode" type="text" placeholder="请输入短信验证码" maxlength="6" oninput="checkVerify()">
+              <input class="token-input sms-input" id="verifyCode" type="text" placeholder="请输入短信验证码" maxlength="6" oninput="checkVerify()">
               <button class="btn btn-secondary btn-sm" id="sendCodeBtn" disabled onclick="sendCode()">获取验证码</button>
             </div>
             <div class="verify-actions">
