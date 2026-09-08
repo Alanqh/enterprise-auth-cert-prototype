@@ -593,28 +593,34 @@
       border-radius: 4px;
       color: var(--text-primary);
     }
-    .cert-generate-section {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px;
-      margin-bottom: 24px;
-    }
-    .cert-records {
-      padding-top: 4px;
-    }
-    .cert-records-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 12px;
-    }
-    .cert-records-footer {
+    #shareModal .modal-body { padding: 0; }
+    .tabs {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 12px;
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      background: #fff;
     }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 14px 16px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      margin-bottom: -1px;
+      transition: color .15s, border-color .15s;
+    }
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      font-weight: 600;
+    }
+    .tab-panel {
+      display: none;
+      padding: 24px;
+    }
+    .tab-panel.active { display: block; }
     .verify-actions {
       display: flex;
       justify-content: flex-start;
@@ -830,7 +836,11 @@
         <button class="modal-close" onclick="closeCertModal()">&times;</button>
       </div>
       <div class="modal-body">
-        <div class="cert-generate-section" id="certGenerateSection">
+        <div class="tabs">
+          <button class="tab-btn active" id="tabGenerate" onclick="switchCertTab('generate')">生成证书</button>
+          <button class="tab-btn" id="tabRecords" onclick="switchCertTab('records')">生成记录</button>
+        </div>
+        <div class="tab-panel active" id="panelGenerate">
           <p class="cert-intro">生成认证证书后，可用于在目标平台完成企业认证。</p>
           <div class="notice" id="noPhoneTip" style="display:none;">
             <span class="notice-icon">&#9888;</span>
@@ -847,8 +857,7 @@
             </div>
           </div>
         </div>
-        <div class="cert-records">
-          <div class="cert-records-title">证书生成记录</div>
+        <div class="tab-panel" id="panelRecords">
           <table class="table">
             <thead>
               <tr>
@@ -1039,8 +1048,15 @@ AQoCggEBALW... truncated ...
       document.getElementById('confirmGenerateBtn').disabled = true;
       renderVerifyChannel();
     }
+    function switchCertTab(tab) {
+      const isGenerate = tab === 'generate';
+      document.getElementById('tabGenerate').classList.toggle('active', isGenerate);
+      document.getElementById('tabRecords').classList.toggle('active', !isGenerate);
+      document.getElementById('panelGenerate').classList.toggle('active', isGenerate);
+      document.getElementById('panelRecords').classList.toggle('active', !isGenerate);
+    }
     function resetCertModal() {
-      document.getElementById('certGenerateSection').style.display = 'block';
+      switchCertTab('generate');
       document.getElementById('certCloseBtn').style.display = '';
       document.getElementById('confirmGenerateBtn').style.display = '';
       resetVerify();
