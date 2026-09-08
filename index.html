@@ -760,7 +760,7 @@
 
   <!-- 生成认证证书弹窗 -->
   <div class="modal-overlay" id="shareModal">
-    <div class="modal" style="max-width: 520px;">
+    <div class="modal" style="max-width: 720px;">
       <div class="modal-header">
         <div class="modal-title">生成认证证书</div>
         <div class="verify-scenario-switch">
@@ -789,48 +789,6 @@
               <input class="token-input" id="verifyCode" type="text" placeholder="请输入短信验证码" maxlength="6" oninput="checkVerify()">
               <button class="btn btn-secondary btn-sm" id="sendCodeBtn" disabled onclick="sendCode()">获取验证码</button>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" id="certCancelBtn" onclick="closeCertModal()">取消</button>
-        <button class="btn btn-primary" id="confirmGenerateBtn" disabled onclick="confirmGenerate()">确认生成</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- 认证证书结果弹窗 -->
-  <div class="modal-overlay" id="resultModal">
-    <div class="modal" style="max-width: 680px;">
-      <div class="modal-header">
-        <div class="modal-title">认证证书</div>
-        <button class="modal-close" onclick="closeModal('resultModal')">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="cert-id-row">
-          <span>证书 ID：</span>
-          <code>sf_cert_7a8b9c0d1e2f3a4b</code>
-        </div>
-        <div class="notice">
-          <span class="notice-icon">&#9888;</span>
-          <div>证书有效期 30 分钟，且仅在当前页面展示一次，请立即复制并妥善保存。</div>
-        </div>
-        <div class="token-result">
-          <div class="token-result-header">
-            <div class="token-result-meta">有效期 30 分钟</div>
-            <button class="btn btn-secondary btn-sm" onclick="copyCert()">复制</button>
-          </div>
-          <div class="token-value">
-            <textarea class="token-input" id="certValue" rows="8" readonly>-----BEGIN CERTIFICATE-----
-MIIDXTCCAkWgAwIBAgIJAJC1HiIAZAiUMA0GCSqGSIb3Qa3BajELMAkGA1UEBhMC
-U0cxDzANBgNVBAgTBlNpbmdhcG9yZTEPMA0GA1UEBxMGU2luZ2Fwb3JlMRMwEQYD
-VQQKEwpBY21lIEluYy4xEjAQBgNVBAsTCVByb2R1Y3RzMRMwEQYDVQQDEwpBY21l
-IEluYy4xIjAgBgkqhkiG9w0BCQEWE2FkbWluQGFjbWVpbmMuY29tMB4XDTE2MDIx
-MzEyNDMxMVoXDTE3MDIxMjEyNDMxMVowWjELMAkGA1UEBhMCU0cxDzANBgNVBAgT
-BlNpbmdhcG9yZTEPMA0GA1UEBxMGU2luZ2Fwb3JlMRMwEQYDVQQKEwpBY21lIElu
-Yy4xEzARBgNVBAMTCkFjbWUgSW5jLjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCC
-AQoCggEBALW... truncated ...
------END CERTIFICATE-----</textarea>
           </div>
         </div>
         <div class="cert-records">
@@ -889,6 +847,48 @@ AQoCggEBALW... truncated ...
               </tr>
             </tbody>
           </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="certCancelBtn" onclick="closeCertModal()">取消</button>
+        <button class="btn btn-primary" id="confirmGenerateBtn" disabled onclick="confirmGenerate()">确认生成</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 认证证书结果弹窗 -->
+  <div class="modal-overlay" id="resultModal">
+    <div class="modal" style="max-width: 680px;">
+      <div class="modal-header">
+        <div class="modal-title">认证证书</div>
+        <button class="modal-close" onclick="closeModal('resultModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="cert-id-row">
+          <span>证书 ID：</span>
+          <code>sf_cert_7a8b9c0d1e2f3a4b</code>
+        </div>
+        <div class="notice">
+          <span class="notice-icon">&#9888;</span>
+          <div>证书有效期 30 分钟，且仅在当前页面展示一次，请立即复制并妥善保存。</div>
+        </div>
+        <div class="token-result">
+          <div class="token-result-header">
+            <div class="token-result-meta">有效期 30 分钟</div>
+            <button class="btn btn-secondary btn-sm" onclick="copyCert()">复制</button>
+          </div>
+          <div class="token-value">
+            <textarea class="token-input" id="certValue" rows="8" readonly>-----BEGIN CERTIFICATE-----
+MIIDXTCCAkWgAwIBAgIJAJC1HiIAZAiUMA0GCSqGSIb3Qa3BajELMAkGA1UEBhMC
+U0cxDzANBgNVBAgTBlNpbmdhcG9yZTEPMA0GA1UEBxMGU2luZ2Fwb3JlMRMwEQYD
+VQQKEwpBY21lIEluYy4xEjAQBgNVBAsTCVByb2R1Y3RzMRMwEQYDVQQDEwpBY21l
+IEluYy4xIjAgBgkqhkiG9w0BCQEWE2FkbWluQGFjbWVpbmMuY29tMB4XDTE2MDIx
+MzEyNDMxMVoXDTE3MDIxMjEyNDMxMVowWjELMAkGA1UEBhMCU0cxDzANBgNVBAgT
+BlNpbmdhcG9yZTEPMA0GA1UEBxMGU2luZ2Fwb3JlMRMwEQYDVQQKEwpBY21lIElu
+Yy4xEzARBgNVBAMTCkFjbWUgSW5jLjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCC
+AQoCggEBALW... truncated ...
+-----END CERTIFICATE-----</textarea>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
