@@ -986,14 +986,13 @@
         <button class="modal-close" onclick="closeModal('resultModal')">&times;</button>
       </div>
       <div class="modal-body">
-        <div class="cert-tip">证书有效期 30 分钟，且仅在当前页面展示一次，请立即复制并妥善保存。</div>
+        <div class="cert-tip">证书有效期 30 分钟，且仅在当前页面展示一次。请记得点击「复制证书」保存。</div>
         <div class="cert-id-row">
           证书 ID：<code>sf_cert_7a8b9c0d1e2f3a4b</code>
         </div>
         <div class="cert-code-block">
           <div class="cert-code-header">
             <span>认证证书</span>
-            <button class="btn btn-secondary btn-sm" onclick="copyCert()">复制</button>
           </div>
           <textarea class="token-input" id="certValue" rows="8" readonly>-----BEGIN CERTIFICATE-----
 MIIDXTCCAkWgAwIBAgIJAJC1HiIAZAiUMA0GCSqGSIb3Qa3BajELMAkGA1UEBhMC
@@ -1008,7 +1007,8 @@ AQoCggEBALW... truncated ...
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-primary" onclick="closeModal('resultModal')">完成</button>
+        <button class="btn btn-secondary" onclick="closeModal('resultModal')">关闭</button>
+        <button class="btn btn-primary" onclick="copyCert()">复制证书</button>
       </div>
     </div>
   </div>
@@ -1156,10 +1156,12 @@ AQoCggEBALW... truncated ...
     function copyCert() {
       const input = document.getElementById('certValue');
       input.select();
-      navigator.clipboard.writeText(input.value).then(() => {
+      return navigator.clipboard.writeText(input.value).then(() => {
         showToast('已复制到剪贴板');
+        return true;
       }).catch(() => {
         showToast('复制失败，请手动复制');
+        return false;
       });
     }
     document.querySelectorAll('.modal-overlay').forEach(el => {
