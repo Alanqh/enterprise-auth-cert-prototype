@@ -826,7 +826,7 @@
         <button class="modal-close" onclick="closeCertModal()">&times;</button>
       </div>
       <div class="modal-body">
-        <div class="cert-generate-section">
+        <div class="cert-generate-section" id="certGenerateSection">
           <p class="cert-intro">生成认证证书后，可用于在 TokenPlus 平台完成企业认证。</p>
           <div class="notice" id="noPhoneTip" style="display:none;">
             <span class="notice-icon">&#9888;</span>
@@ -1031,7 +1031,7 @@ AQoCggEBALW... truncated ...
       renderVerifyChannel();
     }
     function resetCertModal() {
-      document.getElementById('certVerifyStep').style.display = 'block';
+      document.getElementById('certGenerateSection').style.display = 'block';
       document.getElementById('certCancelBtn').style.display = '';
       document.getElementById('confirmGenerateBtn').style.display = '';
       resetVerify();
