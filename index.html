@@ -582,6 +582,29 @@
       line-height: 1.6;
       margin-bottom: 20px;
     }
+    .cert-id-row {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+    .cert-id-row code {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      background: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--text-primary);
+    }
+    .cert-records {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .cert-records-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
     .toast {
       position: fixed;
       bottom: 32px;
@@ -731,43 +754,6 @@
           </div>
         </section>
 
-        <!-- 证书生成记录 -->
-        <section class="card share-feature" id="certRecordsSection">
-          <div class="card-header">
-            <div class="card-title">证书生成记录</div>
-          </div>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>证书ID</th>
-                <th>生成者</th>
-                <th>生成时间</th>
-                <th>生成者IP</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>sf_cert_****a1b2</td>
-                <td>sunyijia</td>
-                <td>2026-09-07 14:30</td>
-                <td>10.0.12.34</td>
-              </tr>
-              <tr>
-                <td>sf_cert_****c3d4</td>
-                <td>李雷</td>
-                <td>2026-09-06 10:15</td>
-                <td>172.16.0.88</td>
-              </tr>
-              <tr>
-                <td>sf_cert_****e5f6</td>
-                <td>韩梅梅</td>
-                <td>2026-09-05 09:00</td>
-                <td>192.168.1.105</td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-
       </main>
     </div>
   </div>
@@ -821,6 +807,14 @@
         <button class="modal-close" onclick="closeModal('resultModal')">&times;</button>
       </div>
       <div class="modal-body">
+        <div class="cert-id-row">
+          <span>证书 ID：</span>
+          <code>sf_cert_7a8b9c0d1e2f3a4b</code>
+        </div>
+        <div class="notice">
+          <span class="notice-icon">&#9888;</span>
+          <div>证书有效期 30 分钟，且仅在当前页面展示一次，请立即复制并妥善保存。</div>
+        </div>
         <div class="token-result">
           <div class="token-result-header">
             <div class="token-result-meta">有效期至 2026-09-08 14:30</div>
@@ -838,6 +832,63 @@ Yy4xEzARBgNVBAMTCkFjbWUgSW5jLjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCC
 AQoCggEBALW... truncated ...
 -----END CERTIFICATE-----</textarea>
           </div>
+        </div>
+        <div class="cert-records">
+          <div class="cert-records-title">证书生成记录</div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>证书ID</th>
+                <th>生成者</th>
+                <th>生成时间</th>
+                <th>生成者IP</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>sf_cert_7a8b9c0d1e2f3a4b</td>
+                <td>
+                  <div class="user-cell">
+                    <div class="user-avatar">孙</div>
+                    <div class="user-info">
+                      <span class="user-name">sunyijia</span>
+                      <span class="user-id">sfd147utbmkkq07mmbrg40</span>
+                    </div>
+                  </div>
+                </td>
+                <td>2026-09-07 14:30</td>
+                <td>10.0.12.34</td>
+              </tr>
+              <tr>
+                <td>sf_cert_3c4d5e6f7a8b9c0d</td>
+                <td>
+                  <div class="user-cell">
+                    <div class="user-avatar">李</div>
+                    <div class="user-info">
+                      <span class="user-name">李雷</span>
+                      <span class="user-id">sf_user_lilei001</span>
+                    </div>
+                  </div>
+                </td>
+                <td>2026-09-06 10:15</td>
+                <td>172.16.0.88</td>
+              </tr>
+              <tr>
+                <td>sf_cert_9d0e1f2a3b4c5d6e</td>
+                <td>
+                  <div class="user-cell">
+                    <div class="user-avatar">韩</div>
+                    <div class="user-info">
+                      <span class="user-name">韩梅梅</span>
+                      <span class="user-id">sf_user_hanmm002</span>
+                    </div>
+                  </div>
+                </td>
+                <td>2026-09-05 09:00</td>
+                <td>192.168.1.105</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
       <div class="modal-footer">
