@@ -596,6 +596,12 @@
       border-radius: 4px;
       color: var(--text-primary);
     }
+    .cert-tip {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
     #shareModal .modal-body { padding: 0; }
     .tabs {
       display: flex;
@@ -948,12 +954,9 @@
         <button class="modal-close" onclick="closeModal('resultModal')">&times;</button>
       </div>
       <div class="modal-body">
+        <div class="cert-tip">证书有效期 30 分钟，且仅在当前页面展示一次，请立即复制并妥善保存。</div>
         <div class="cert-id-row">
           证书 ID：<code>sf_cert_7a8b9c0d1e2f3a4b</code>
-        </div>
-        <div class="notice">
-          <span class="notice-icon">&#9888;</span>
-          <div>证书有效期 30 分钟，且仅在当前页面展示一次，请立即复制并妥善保存。</div>
         </div>
         <div class="cert-code-block">
           <div class="cert-code-header">
