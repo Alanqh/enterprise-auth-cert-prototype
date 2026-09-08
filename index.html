@@ -618,7 +618,7 @@
     }
     .verify-actions {
       display: flex;
-      justify-content: flex-end;
+      justify-content: flex-start;
       margin-top: 12px;
     }
     .notice {
@@ -832,7 +832,7 @@
       </div>
       <div class="modal-body">
         <div class="cert-generate-section" id="certGenerateSection">
-          <p class="cert-intro">生成认证证书后，可用于在 TokenPlus 平台完成企业认证。</p>
+          <p class="cert-intro">生成认证证书后，可用于在目标平台完成企业认证。</p>
           <div class="notice" id="noPhoneTip" style="display:none;">
             <span class="notice-icon">&#9888;</span>
             <div>当前企业的所有者未绑定手机号，无法完成短信验证，请先绑定手机号。</div>
@@ -845,7 +845,7 @@
               <button class="btn btn-secondary btn-sm" id="sendCodeBtn" disabled onclick="sendCode()">获取验证码</button>
             </div>
             <div class="verify-actions">
-              <button class="btn btn-primary" id="confirmGenerateBtn" disabled onclick="confirmGenerate()">确认生成</button>
+              <button class="btn btn-primary" id="confirmGenerateBtn" disabled onclick="confirmGenerate()">立即生成</button>
             </div>
           </div>
         </div>
@@ -857,6 +857,7 @@
                 <th>证书ID</th>
                 <th>生成者</th>
                 <th>生成时间</th>
+                <th>失效时间</th>
                 <th>生成者IP</th>
               </tr>
             </thead>
@@ -873,6 +874,7 @@
                   </div>
                 </td>
                 <td>2026-09-07 14:30</td>
+                <td>2026-09-07 15:00</td>
                 <td>10.0.12.34</td>
               </tr>
               <tr>
@@ -887,6 +889,7 @@
                   </div>
                 </td>
                 <td>2026-09-06 10:15</td>
+                <td>2026-09-06 10:45</td>
                 <td>172.16.0.88</td>
               </tr>
               <tr>
@@ -901,6 +904,7 @@
                   </div>
                 </td>
                 <td>2026-09-05 09:00</td>
+                <td>2026-09-05 09:30</td>
                 <td>192.168.1.105</td>
               </tr>
             </tbody>
