@@ -594,16 +594,67 @@
       border-radius: 4px;
       color: var(--text-primary);
     }
+    .cert-generate-section {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 24px;
+    }
     .cert-records {
-      margin-top: 24px;
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
+      padding-top: 4px;
     }
     .cert-records-title {
       font-size: 14px;
       font-weight: 600;
       color: var(--text-primary);
       margin-bottom: 12px;
+    }
+    .cert-records-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 12px;
+    }
+    .notice {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      font-size: 13px;
+      color: #92400e;
+      margin-bottom: 16px;
+    }
+    .notice > div {
+      line-height: 1.5;
+      flex: 1;
+    }
+    .cert-code-block {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: #f8fafc;
+    }
+    .cert-code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+    .cert-code-block textarea {
+      border: none;
+      border-radius: 0;
+      background: transparent;
+      resize: vertical;
+      min-height: 180px;
     }
     .toast {
       position: fixed;
@@ -775,8 +826,7 @@
         <button class="modal-close" onclick="closeCertModal()">&times;</button>
       </div>
       <div class="modal-body">
-        <!-- 验证步骤 -->
-        <div id="certVerifyStep">
+        <div class="cert-generate-section">
           <p class="cert-intro">生成认证证书后，可用于在 TokenPlus 平台完成企业认证。</p>
           <div class="notice" id="noPhoneTip" style="display:none;">
             <span class="notice-icon">&#9888;</span>
@@ -847,6 +897,17 @@
               </tr>
             </tbody>
           </table>
+          <div class="pagination">
+            <div class="pagination-total">共 3 条</div>
+            <button class="pagination-btn" disabled>&lt;</button>
+            <span class="pagination-current">1</span>
+            <button class="pagination-btn" disabled>&gt;</button>
+            <select class="pagination-size">
+              <option>10 条/页</option>
+              <option>20 条/页</option>
+              <option>50 条/页</option>
+            </select>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
@@ -865,20 +926,18 @@
       </div>
       <div class="modal-body">
         <div class="cert-id-row">
-          <span>证书 ID：</span>
-          <code>sf_cert_7a8b9c0d1e2f3a4b</code>
+          证书 ID：<code>sf_cert_7a8b9c0d1e2f3a4b</code>
         </div>
         <div class="notice">
           <span class="notice-icon">&#9888;</span>
           <div>证书有效期 30 分钟，且仅在当前页面展示一次，请立即复制并妥善保存。</div>
         </div>
-        <div class="token-result">
-          <div class="token-result-header">
-            <div class="token-result-meta">有效期 30 分钟</div>
+        <div class="cert-code-block">
+          <div class="cert-code-header">
+            <span>认证证书</span>
             <button class="btn btn-secondary btn-sm" onclick="copyCert()">复制</button>
           </div>
-          <div class="token-value">
-            <textarea class="token-input" id="certValue" rows="8" readonly>-----BEGIN CERTIFICATE-----
+          <textarea class="token-input" id="certValue" rows="8" readonly>-----BEGIN CERTIFICATE-----
 MIIDXTCCAkWgAwIBAgIJAJC1HiIAZAiUMA0GCSqGSIb3Qa3BajELMAkGA1UEBhMC
 U0cxDzANBgNVBAgTBlNpbmdhcG9yZTEPMA0GA1UEBxMGU2luZ2Fwb3JlMRMwEQYD
 VQQKEwpBY21lIEluYy4xEjAQBgNVBAsTCVByb2R1Y3RzMRMwEQYDVQQDEwpBY21l
@@ -888,7 +947,6 @@ BlNpbmdhcG9yZTEPMA0GA1UEBxMGU2luZ2Fwb3JlMRMwEQYDVQQKEwpBY21lIElu
 Yy4xEzARBgNVBAMTCkFjbWUgSW5jLjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCC
 AQoCggEBALW... truncated ...
 -----END CERTIFICATE-----</textarea>
-          </div>
         </div>
       </div>
       <div class="modal-footer">
