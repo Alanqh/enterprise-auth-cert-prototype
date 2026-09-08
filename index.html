@@ -438,9 +438,12 @@
     .verify-section { margin-bottom: 20px; }
     .verify-section:last-child { margin-bottom: 0; }
     .sms-input {
-      max-width: 180px;
+      width: 150px;
       text-align: center;
-      letter-spacing: 2px;
+      letter-spacing: 3px;
+      font-variant-numeric: tabular-nums;
+      padding-left: 12px;
+      padding-right: 12px;
     }
     .verify-phone {
       font-size: 13px;
@@ -621,10 +624,11 @@
       padding: 24px;
     }
     .tab-panel.active { display: block; }
-    .verify-actions {
+    .panel-actions {
       display: flex;
-      justify-content: flex-start;
-      margin-top: 12px;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 24px;
     }
     .notice {
       display: flex;
@@ -849,12 +853,13 @@
           <div class="verify-section" id="verifyCodeSection">
             <div class="verify-phone" id="verifyChannelHint">短信验证码将发送至：138****1234</div>
             <div class="verify-input-row" id="verifyInputRow">
-              <input class="token-input sms-input" id="verifyCode" type="text" placeholder="请输入短信验证码" maxlength="6" oninput="checkVerify()">
+              <input class="token-input sms-input" id="verifyCode" type="text" placeholder="短信验证码" maxlength="6" oninput="checkVerify()">
               <button class="btn btn-secondary btn-sm" id="sendCodeBtn" disabled onclick="sendCode()">获取验证码</button>
             </div>
-            <div class="verify-actions">
-              <button class="btn btn-primary" id="confirmGenerateBtn" disabled onclick="confirmGenerate()">立即生成</button>
-            </div>
+          </div>
+          <div class="panel-actions">
+            <button class="btn btn-secondary" onclick="closeCertModal()">取消</button>
+            <button class="btn btn-primary" id="confirmGenerateBtn" disabled onclick="confirmGenerate()">立即生成</button>
           </div>
         </div>
         <div class="tab-panel" id="panelRecords">
