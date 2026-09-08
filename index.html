@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>实名认证 - 硅基流动</title>
+  <style>
+    :root {
+      --sidebar-bg: #7c3aed;
+      --sidebar-text: rgba(255,255,255,0.85);
+      --sidebar-active: rgba(255,255,255,0.14);
+      --bg: #f5f7fa;
+      --card-bg: #ffffff;
+      --text-primary: #1f2329;
+      --text-secondary: #646a73;
+      --text-tertiary: #8f959e;
+      --border: #e5e7eb;
+      --primary: #7c3aed;
+      --primary-hover: #6d28d9;
+      --primary-light: #f3f0ff;
+      --success: #10b981;
+      --success-bg: #ecfdf5;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --radius: 8px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+    .app {
+      display: flex;
+      min-height: 100vh;
+    }
+    /* 左侧导航栏 */
+    .sidebar {
+      width: 200px;
+      background: var(--sidebar-bg);
+      color: var(--sidebar-text);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+    .logo {
+      height: 56px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+    }
+    .logo-icon {
+      width: 28px;
+      height: 28px;
+      background: #fff;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo-icon svg { width: 18px; height: 18px; }
+    .nav {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 12px;
+    }
+    .nav-section {
+      margin-bottom: 16px;
+    }
+    .nav-section-title {
+      font-size: 12px;
+      color: rgba(255,255,255,0.55);
+      padding: 8px 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.15s;
+      color: var(--sidebar-text);
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.08); }
+    .nav-item.active {
+      background: var(--sidebar-active);
+      color: #fff;
+    }
+    .nav-item svg { width: 18px; height: 18px; opacity: 0.9; }
+    .nav-item.beta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .beta-tag {
+      font-size: 10px;
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.2);
+      color: #fff;
+    }
+    .sidebar-footer {
+      padding: 12px 16px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.5;
+    }
+    /* 主区域 */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .header {
+      height: 56px;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      flex-shrink: 0;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .menu-icon {
+      width: 20px;
+      height: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+    .menu-icon span {
+      display: block;
+      height: 2px;
+      background: var(--text-primary);
+      border-radius: 1px;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .icon-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+    }
+    .icon-btn:hover { background: var(--bg); }
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #0d9488;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .container {
+      flex: 1;
+      padding: 24px;
+      overflow-y: auto;
+    }
+    .page-title {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .card-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .check-icon {
+      width: 18px;
+      height: 18px;
+      color: var(--success);
+    }
+    .link {
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .link:hover { text-decoration: underline; }
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 40px;
+    }
+    .info-item {
+      display: flex;
+      gap: 8px;
+      font-size: 14px;
+    }
+    .info-label {
+      color: var(--text-secondary);
+      min-width: 70px;
+    }
+    .info-value {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+    .permission-toggle {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 14px;
+      box-shadow: var(--shadow);
+      font-size: 12px;
+      color: var(--text-secondary);
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .permission-toggle label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .permission-toggle input { cursor: pointer; }
+    .verify-scenario-switch {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-left: auto;
+      margin-right: 12px;
+    }
+    .verify-scenario-switch select {
+      font-size: 12px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 4px;
+      outline: none;
+      cursor: pointer;
+      margin-left: 6px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-secondary {
+      background: #fff;
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { background: var(--bg); }
+    .btn-sm { padding: 6px 12px; font-size: 13px; }
+    .btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    .table th,
+    .table td {
+      padding: 12px 8px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .table th {
+      color: var(--text-secondary);
+      font-weight: 500;
+      font-size: 13px;
+    }
+    .table tbody tr:last-child td { border-bottom: none; }
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 16px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    .pagination-total { color: var(--text-secondary); }
+    .pagination-btn {
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: #fff;
+      color: var(--text-primary);
+      cursor: pointer;
+      font-size: 14px;
+      padding: 0;
+    }
+    .pagination-btn:hover:not([disabled]) { border-color: var(--primary); color: var(--primary); }
+    .pagination-btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+    .pagination-current {
+      min-width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--primary);
+      border-radius: var(--radius);
+      color: var(--primary);
+      font-weight: 500;
+    }
+    .pagination-size {
+      height: 32px;
+      padding: 0 8px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: #fff;
+      color: var(--text-primary);
+      font-size: 14px;
+      cursor: pointer;
+      outline: none;
+    }
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+    }
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+    .status-unused { color: var(--text-secondary); }
+    .status-unused .status-dot { background: var(--text-tertiary); }
+    .status-used { color: var(--success); }
+    .status-used .status-dot { background: var(--success); }
+    .status-expired { color: var(--danger); }
+    .status-expired .status-dot { background: var(--danger); }
+    .user-cell {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+    .user-avatar img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .user-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .user-name {
+      font-size: 14px;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+    .user-id {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    }
+    .verify-section { margin-bottom: 20px; }
+    .verify-section:last-child { margin-bottom: 0; }
+    .verify-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+    .verify-phone {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    .verify-input-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .verify-input-row .token-input { flex: 1; }
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 24px;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 520px;
+      max-height: 90vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .modal-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .modal-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 22px;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+    .modal-body {
+      padding: 20px 24px;
+      overflow-y: auto;
+      font-size: 14px;
+    }
+    .agreement-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      max-height: 220px;
+      overflow-y: auto;
+      margin-bottom: 16px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+    .agreement-box h4 {
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    .agreement-box p { margin-bottom: 10px; }
+    .checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+    .checkbox-row input {
+      margin-top: 3px;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+    .modal-footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+    .token-result {
+      margin-bottom: 8px;
+    }
+    .token-result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .token-result-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.4;
+    }
+    .token-result-meta {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+    .token-value {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .token-input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: #f8fafc;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-primary);
+      resize: none;
+      min-height: 44px;
+    }
+    .cert-intro {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(0,0,0,0.8);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 10000;
+      pointer-events: none;
+    }
+    .toast.active {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .scenario-toggle {
+      display: flex;
+      gap: 10px;
+      padding: 12px 16px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: var(--radius);
+      font-size: 13px;
+      color: #92400e;
+      margin-bottom: 20px;
+    }
+    .notice-icon {
+      font-size: 16px;
+      line-height: 1.4;
+    }
+    .captcha-image {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      background: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .captcha-char {
+      position: absolute;
+      font-size: 28px;
+      font-weight: 700;
+      color: #4f46e5;
+      text-shadow: 1px 1px 0 rgba(255,255,255,0.8);
+      user-select: none;
+    }
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .info-grid { grid-template-columns: 1fr; }
+      .container { padding: 16px; }
+      .card { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- 左侧导航栏 -->
+    <aside class="sidebar">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <span>硅基流动</span>
+      </div>
+      <nav class="nav">
+        <div class="nav-section">
+          <div class="nav-section-title">模型</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>模型广场</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>批量推理</div>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">体验中心</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>文本对话</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>图像生成</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>视频生成</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>语音合成</div>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">弹性 GPU</div>
+          <div class="nav-item beta">GPU 云函数<span class="beta-tag">Beta</span></div>
+          <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>镜像仓库</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>对象存储</div>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">账户管理</div>
+          <div class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>实名认证</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>API 密钥</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>文档中心</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>工单反馈</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>商务合作</div>
+        </div>
+      </nav>
+      <div class="sidebar-footer">Beijing-GuiJiLiuDong<br>AIYunFuWu-2025120150112</div>
+    </aside>
+
+    <!-- 主区域 -->
+    <div class="main">
+      <header class="header">
+        <div class="header-left">
+          <div class="menu-icon"><span></span><span></span><span></span></div>
+          <span>实名认证</span>
+        </div>
+        <div class="header-right">
+          <button class="icon-btn" aria-label="通知">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          </button>
+          <div class="avatar">李</div>
+        </div>
+      </header>
+
+      <main class="container">
+        <!-- 企业认证信息卡片 -->
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span>账户已完成企业认证</span>
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div class="card-actions">
+              <a class="link">修改企业认证信息</a>
+              <a class="link share-feature" id="shareHeaderBtn" href="javascript:void(0)" onclick="openCertModal()">生成认证证书</a>
+            </div>
+          </div>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="info-label">认证主体：</span>
+              <span class="info-value">北京硅基流动科技股份有限公司</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">认证方式：</span>
+              <span class="info-value">企业对公打款</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">证照号码：</span>
+              <span class="info-value">9111****H50K</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">认证时间：</span>
+              <span class="info-value">2026-08-20 10:26</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 证书生成记录 -->
+        <section class="card share-feature" id="certRecordsSection">
+          <div class="card-header">
+            <div class="card-title">证书生成记录</div>
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>证书ID</th>
+                <th>生成者</th>
+                <th>生成时间</th>
+                <th>生成者IP</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>sf_cert_****a1b2</td>
+                <td>sunyijia</td>
+                <td>2026-09-07 14:30</td>
+                <td>10.0.12.34</td>
+              </tr>
+              <tr>
+                <td>sf_cert_****c3d4</td>
+                <td>李雷</td>
+                <td>2026-09-06 10:15</td>
+                <td>172.16.0.88</td>
+              </tr>
+              <tr>
+                <td>sf_cert_****e5f6</td>
+                <td>韩梅梅</td>
+                <td>2026-09-05 09:00</td>
+                <td>192.168.1.105</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- 生成认证证书弹窗 -->
+  <div class="modal-overlay" id="shareModal">
+    <div class="modal" style="max-width: 520px;">
+      <div class="modal-header">
+        <div class="modal-title">生成认证证书</div>
+        <div class="verify-scenario-switch">
+          <label>
+            <span>原型演示：验证场景</span>
+            <select id="verifyScenario" onchange="setVerifyScenario(this.value)">
+              <option value="phone" selected>有手机号</option>
+              <option value="noPhone">无手机号（去绑定）</option>
+            </select>
+          </label>
+        </div>
+        <button class="modal-close" onclick="closeCertModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- 验证步骤 -->
+        <div id="certVerifyStep">
+          <p class="cert-intro">生成认证证书后，可用于在 TokenPlus 平台完成企业认证。</p>
+          <div class="notice" id="noPhoneTip" style="display:none;">
+            <span class="notice-icon">&#9888;</span>
+            <div>当前企业的所有者未绑定手机号，无法完成短信验证，请先绑定手机号。</div>
+          </div>
+          <div class="verify-section" id="verifyCodeSection">
+            <div class="verify-label">短信验证</div>
+            <div class="verify-phone" id="verifyChannelHint">短信验证码将发送至：138****1234</div>
+            <div class="verify-input-row" id="verifyInputRow">
+              <input class="token-input" id="verifyCode" type="text" placeholder="请输入短信验证码" maxlength="6" oninput="checkVerify()">
+              <button class="btn btn-secondary btn-sm" id="sendCodeBtn" disabled onclick="sendCode()">获取验证码</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="certCancelBtn" onclick="closeCertModal()">取消</button>
+        <button class="btn btn-primary" id="confirmGenerateBtn" disabled onclick="confirmGenerate()">确认生成</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 认证证书结果弹窗 -->
+  <div class="modal-overlay" id="resultModal">
+    <div class="modal" style="max-width: 680px;">
+      <div class="modal-header">
+        <div class="modal-title">认证证书</div>
+        <button class="modal-close" onclick="closeModal('resultModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="token-result">
+          <div class="token-result-header">
+            <div class="token-result-meta">有效期至 2026-09-08 14:30</div>
+            <button class="btn btn-secondary btn-sm" onclick="copyCert()">复制</button>
+          </div>
+          <div class="token-value">
+            <textarea class="token-input" id="certValue" rows="8" readonly>-----BEGIN CERTIFICATE-----
+MIIDXTCCAkWgAwIBAgIJAJC1HiIAZAiUMA0GCSqGSIb3Qa3BajELMAkGA1UEBhMC
+U0cxDzANBgNVBAgTBlNpbmdhcG9yZTEPMA0GA1UEBxMGU2luZ2Fwb3JlMRMwEQYD
+VQQKEwpBY21lIEluYy4xEjAQBgNVBAsTCVByb2R1Y3RzMRMwEQYDVQQDEwpBY21l
+IEluYy4xIjAgBgkqhkiG9w0BCQEWE2FkbWluQGFjbWVpbmMuY29tMB4XDTE2MDIx
+MzEyNDMxMVoXDTE3MDIxMjEyNDMxMVowWjELMAkGA1UEBhMCU0cxDzANBgNVBAgT
+BlNpbmdhcG9yZTEPMA0GA1UEBxMGU2luZ2Fwb3JlMRMwEQYDVQQKEwpBY21lIElu
+Yy4xEzARBgNVBAMTCkFjbWUgSW5jLjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCC
+AQoCggEBALW... truncated ...
+-----END CERTIFICATE-----</textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="closeModal('resultModal')">完成</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 安全验证弹窗（点选验证码） -->
+  <div class="modal-overlay" id="captchaModal">
+    <div class="modal" style="max-width: 360px;">
+      <div class="modal-header">
+        <div class="modal-title">请完成安全验证</div>
+        <button class="modal-close" onclick="closeModal('captchaModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;">请依次点击图片中的「文」「字」「验」「证」</p>
+        <div class="captcha-image" onclick="onCaptchaSuccess()">
+          <div class="captcha-char" style="top:22%;left:28%;">文</div>
+          <div class="captcha-char" style="top:60%;left:72%;">字</div>
+          <div class="captcha-char" style="top:38%;left:52%;">验</div>
+          <div class="captcha-char" style="top:72%;left:18%;">证</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    let smsTimer = null;
+    let userPhone = '138****1234'; // 真实场景由后端返回
+
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    function togglePermission() {
+      const hasPermission = document.getElementById('permToggle').checked;
+      document.querySelectorAll('.share-feature').forEach(el => {
+        el.style.display = hasPermission ? '' : 'none';
+      });
+    }
+    function setVerifyScenario(scenario) {
+      if (scenario === 'phone') {
+        userPhone = '138****1234';
+      } else {
+        userPhone = null;
+      }
+      if (document.getElementById('shareModal').classList.contains('active')) {
+        resetCertModal();
+      }
+    }
+    function renderVerifyChannel() {
+      const hint = document.getElementById('verifyChannelHint');
+      const sendCodeBtn = document.getElementById('sendCodeBtn');
+      const noPhoneTip = document.getElementById('noPhoneTip');
+      const codeSection = document.getElementById('verifyCodeSection');
+      if (userPhone) {
+        hint.textContent = `验证码将发送至：${userPhone}`;
+        sendCodeBtn.textContent = '获取验证码';
+        sendCodeBtn.disabled = false;
+        noPhoneTip.style.display = 'none';
+        codeSection.style.display = 'block';
+      } else {
+        sendCodeBtn.disabled = true;
+        noPhoneTip.style.display = 'flex';
+        codeSection.style.display = 'none';
+      }
+    }
+    function resetVerify() {
+      if (smsTimer) clearInterval(smsTimer);
+      const sendCodeBtn = document.getElementById('sendCodeBtn');
+      sendCodeBtn.textContent = '获取验证码';
+      sendCodeBtn.disabled = !userPhone;
+      document.getElementById('verifyCode').value = '';
+      document.getElementById('confirmGenerateBtn').disabled = true;
+      renderVerifyChannel();
+    }
+    function resetCertModal() {
+      document.getElementById('certVerifyStep').style.display = 'block';
+      document.getElementById('certCancelBtn').style.display = '';
+      document.getElementById('confirmGenerateBtn').style.display = '';
+      resetVerify();
+    }
+    function openCertModal() {
+      resetCertModal();
+      openModal('shareModal');
+    }
+    function closeCertModal() {
+      closeModal('shareModal');
+      setTimeout(resetCertModal, 200);
+    }
+    function onCaptchaSuccess() {
+      closeModal('captchaModal');
+      const btn = document.getElementById('sendCodeBtn');
+      let sec = 60;
+      btn.disabled = true;
+      btn.textContent = `${sec}s 后重试`;
+      if (smsTimer) clearInterval(smsTimer);
+      smsTimer = setInterval(() => {
+        sec--;
+        if (sec <= 0) {
+          clearInterval(smsTimer);
+          btn.disabled = false;
+          btn.textContent = '获取验证码';
+        } else {
+          btn.textContent = `${sec}s 后重试`;
+        }
+      }, 1000);
+      // 原型演示：自动填入验证码
+      setTimeout(() => {
+        document.getElementById('verifyCode').value = '123456';
+        checkVerify();
+      }, 800);
+    }
+    function sendCode() {
+      if (!userPhone) return;
+      openModal('captchaModal');
+    }
+    function checkVerify() {
+      const code = document.getElementById('verifyCode').value.trim();
+      document.getElementById('confirmGenerateBtn').disabled = !(userPhone && code.length === 6);
+    }
+    function confirmGenerate() {
+      closeModal('shareModal');
+      openModal('resultModal');
+      setTimeout(resetCertModal, 200);
+    }
+    let toastTimer = null;
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('active');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('active'), 2000);
+    }
+    function copyCert() {
+      const input = document.getElementById('certValue');
+      input.select();
+      navigator.clipboard.writeText(input.value).then(() => {
+        showToast('已复制到剪贴板');
+      }).catch(() => {
+        showToast('复制失败，请手动复制');
+      });
+    }
+    document.querySelectorAll('.modal-overlay').forEach(el => {
+      el.addEventListener('click', e => {
+        if (e.target === el) closeModal(el.id);
+      });
+    });
+  </script>
+
+  <!-- 权限模拟开关：仅用于原型演示 -->
+  <div class="permission-toggle">
+    <label>
+      <input type="checkbox" id="permToggle" checked onchange="togglePermission()">
+      <span>模拟：拥有「企业认证证书管理权」</span>
+    </label>
+  </div>
+</body>
+</html>
